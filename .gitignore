@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/MyGameMaker
+/MyGameEditor/x64/Debug
+*.user
+/x64/Debug
