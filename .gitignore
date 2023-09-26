@@ -6,3 +6,5 @@
 /MyGameEditor/x64/Debug
 *.user
 /x64/Debug
+/.vs
+/MyGameEngine/x64/Debug

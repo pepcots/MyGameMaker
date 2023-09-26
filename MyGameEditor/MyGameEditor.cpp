@@ -6,6 +6,8 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_opengl.h"
 
+#include "../MyGameEngine/MyGameEngine.h"
+
 static const int WINDOW_WIDTH = 1280;
 static const int WINDOW_HEIGHT = 720;
 
@@ -13,6 +15,9 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+    MyGameEngine gameEngine;
+    gameEngine.start();
+
     // initiate SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
