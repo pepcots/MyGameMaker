@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 #include "GL/glew.h"
 #include "SDL2/SDL.h"
@@ -9,9 +11,11 @@
 #include "../MyGameEngine/MyGameEngine.h"
 
 using namespace std;
+using namespace chrono;
 
 static const int WINDOW_WIDTH = 1280;
 static const int WINDOW_HEIGHT = 720;
+static const int FPS = 60;
 
 static SDL_Window* initSDLWindowWithOpenGL() {
     if (SDL_Init(SDL_INIT_VIDEO)!=0) throw exception(SDL_GetError());
@@ -79,20 +83,9 @@ static bool processSDLEvents() {
 }
 
 static void render() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glColor4ub(255, 0, 0, 255);
-    glBegin(GL_TRIANGLES);
-    glVertex3d(-0.25, 0, 0);
-    glVertex3d(0.25, 0, 0);
-    glVertex3d(0, 0.5, 0);
-    glEnd();
+    
+   
 }
 
 int main(int argc, char **argv)
@@ -102,9 +95,21 @@ int main(int argc, char **argv)
         auto gl_context = createSdlGlContext(window);
         initOpenGL();
 
+        auto t0 = high_resolution_clock::now();
+        auto t1 = high_resolution_clock::now();
+        auto dt = 1000ms / FPS;
+
+        MyGameEngine engine;
         while (processSDLEvents()) {
-            render();
+            auto t0 = high_resolution_clock::now();
+            engine.step(dt.count()/1000.0);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            engine.render();
             SDL_GL_SwapWindow(window);
+            auto t1 = high_resolution_clock::now();
+            auto frame_duration = t1 - t0;
+            if(frame_duration<dt) this_thread::sleep_for(dt-frame_duration);
         }
 
         SDL_GL_DeleteContext(gl_context);

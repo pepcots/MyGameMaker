@@ -3,9 +3,7 @@
 class MyGameEngine
 {
 public:
-	void init();
-	void start();
-	void pause();
-	void stop();
+	void step(double dt);
+	void render();
 };
 
