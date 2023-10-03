@@ -2,11 +2,10 @@
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
 
-static const double PI = std::atan(1.0) * 4.0;
 static double angle = 0.0;
 
 void MyGameEngine::step(std::chrono::duration<double> dt) {
-	const double angle_vel = 360.0 ; // 360 degrees per second
+    const double angle_vel = 360.0; // 360 degrees per second
 	angle += angle_vel * dt.count();
 }
 
