@@ -1,11 +1,20 @@
 #include "MyGameEngine.h"
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
+#include <vector>
+
+#include "CubeImmediateMode.h"
+#include "CubeVertexArray.h"
+#include "CubeVertexBuffer.h"
+#include "CubeInterleavedVBO.h"
+#include "CubeWireframeIVBO.h"
+
+using namespace std;
 
 static double angle = 0.0;
 
 void MyGameEngine::step(std::chrono::duration<double> dt) {
-    const double angle_vel = 360.0; // 360 degrees per second
+    const double angle_vel = 90.0; // degrees per second
 	angle += angle_vel * dt.count();
 }
 
@@ -61,20 +70,23 @@ void MyGameEngine::render(RenderModes renderMode) {
         drawAxis();
     }
     
-#pragma region direct draw test
-    glRotated(angle, 0, 0, 1);
+#pragma region Draw Sandbox
+    glPushMatrix();
+    glRotated(angle, 0, 1, 0);
+    glRotated(angle, 1, 0, 0);
+    static CubeImmediateMode cubeImmediateMode;
+    static CubeVertexArray cubeVertexArray;
+    static CubeVertexBuffer cubeVertexBuffer;
+    static CubeInterleavedVBO cubeInterleavedVBO;
+    static Cube* cubes[] = {&cubeImmediateMode, &cubeVertexArray, &cubeVertexBuffer, &cubeInterleavedVBO };
+    static int cubeIndx;
+    cubes[(cubeIndx++)%4]->draw();
 
-    glColor4ub(255, 0, 0, 255);
-    glBegin(GL_TRIANGLES);
-    glVertex3d(-0.25, -0.25, 0);
-    glVertex3d(0.25, -0.25, 0);
-    glVertex3d(0, 0.25, 0);
+    static CubeWireframeIVBO cubeWireframeIVBO;
+    cubeWireframeIVBO.draw();
 
-    glVertex3d(0.25, 0.25, 0);
-    glVertex3d(-0.25, 0.25, 0);
-    glVertex3d(0, -0.25, 0);
 
-    glEnd();
+    glPopMatrix();
 #pragma endregion
 
 }
