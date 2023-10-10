@@ -8,6 +8,7 @@ class CubeWireframeIVBO : public Cube
 public:
 	CubeWireframeIVBO();
 	void draw();
+	~CubeWireframeIVBO();
 
 };
 

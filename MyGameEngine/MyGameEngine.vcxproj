@@ -18,6 +18,8 @@
     <ClInclude Include="CubeVertexArray.h" />
     <ClInclude Include="CubeVertexBuffer.h" />
     <ClInclude Include="CubeWireframeIVBO.h" />
+    <ClInclude Include="Graphic.h" />
+    <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="MyGameEngine.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
@@ -29,6 +31,7 @@
     <ClCompile Include="CubeVertexArray.cpp" />
     <ClCompile Include="CubeVertexBuffer.cpp" />
     <ClCompile Include="CubeWireframeIVBO.cpp" />
+    <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="MyGameEngine.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

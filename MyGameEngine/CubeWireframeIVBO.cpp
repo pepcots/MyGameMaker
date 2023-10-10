@@ -39,3 +39,8 @@ void CubeWireframeIVBO::draw() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+CubeWireframeIVBO::~CubeWireframeIVBO() {
+    glDeleteBuffers(1, &_buffer_id);
+    glDeleteBuffers(1, &_index_bufer_id);
+}

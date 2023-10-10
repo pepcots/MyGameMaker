@@ -9,4 +9,6 @@ public:
 	CubeInterleavedVBO();
 	void draw();
 
+	~CubeInterleavedVBO();
+
 };

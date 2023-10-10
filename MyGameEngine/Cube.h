@@ -1,8 +1,9 @@
 #pragma once
 
 #include "types.h"
+#include "Graphic.h"
 
-struct Cube
+struct Cube : Graphic
 {
 	static const int NUM_FACES = 6;
 	static const int NUM_TRIANGLES = NUM_FACES * 2;
@@ -25,6 +26,5 @@ struct Cube
 	const vec3 black;
 
 	Cube();
-	virtual void draw() = 0;
 };
 

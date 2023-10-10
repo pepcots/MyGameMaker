@@ -50,3 +50,7 @@ void CubeInterleavedVBO::draw() {
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+CubeInterleavedVBO::~CubeInterleavedVBO() {
+    glDeleteBuffers(1, &_buffer_id);
+}
+

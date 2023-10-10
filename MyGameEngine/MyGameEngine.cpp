@@ -9,6 +9,8 @@
 #include "CubeInterleavedVBO.h"
 #include "CubeWireframeIVBO.h"
 
+#include "GraphicObject.h"
+
 using namespace std;
 
 static double angle = 0.0;
@@ -71,22 +73,22 @@ void MyGameEngine::render(RenderModes renderMode) {
     }
     
 #pragma region Draw Sandbox
-    glPushMatrix();
-    glRotated(angle, 0, 1, 0);
-    glRotated(angle, 1, 0, 0);
-    static CubeImmediateMode cubeImmediateMode;
-    static CubeVertexArray cubeVertexArray;
-    static CubeVertexBuffer cubeVertexBuffer;
-    static CubeInterleavedVBO cubeInterleavedVBO;
-    static Cube* cubes[] = {&cubeImmediateMode, &cubeVertexArray, &cubeVertexBuffer, &cubeInterleavedVBO };
-    static int cubeIndx;
-    cubes[(cubeIndx++)%4]->draw();
+    auto cubeDraw = make_shared<CubeInterleavedVBO>();
+    GraphicObject cubeA(cubeDraw);
+    GraphicObject cubeB(cubeDraw);
+    GraphicObject cubeC(cubeDraw);
 
-    static CubeWireframeIVBO cubeWireframeIVBO;
-    cubeWireframeIVBO.draw();
+    cubeA.addChild(&cubeB);
+    cubeB.addChild(&cubeC);
+    cubeB.pos().y = 2.5;
+    cubeC.pos().x = 2.5;
+    
+    cubeA.rotate(glm::radians(angle), vec3(0, 1, 0));
+    cubeB.rotate(glm::radians(angle), vec3(1, 0, 0));
+    cubeC.rotate(glm::radians(angle), vec3(0, 0, 1));
 
+    cubeA.paint();
 
-    glPopMatrix();
 #pragma endregion
 
 }
