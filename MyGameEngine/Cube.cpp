@@ -1,5 +1,4 @@
 #include "Cube.h"
-#include <IL/il.h>
 
 Cube::Cube() :
     a(-1, -1, 1),
@@ -16,14 +15,5 @@ Cube::Cube() :
     yellow(1, 1, 0),
     white(0, 1, 1),
     black(1, 0, 1) {
-
-    auto img = ilGenImage();
-    ilBindImage(img);
-    ilLoadImage("Lenna.png");
-    auto width = ilGetInteger(IL_IMAGE_WIDTH);
-    auto height = ilGetInteger(IL_IMAGE_HEIGHT);
-    auto channels = ilGetInteger(IL_IMAGE_CHANNELS);
-    auto data = ilGetData();
-
 }
 

@@ -79,7 +79,7 @@ void MyGameEngine::render() {
     
     
 #pragma region Draw Sandbox
-    auto cubeDraw = make_shared<CubeInterleavedVBO>();
+    auto cubeDraw = make_shared<CubeImmediateMode>();
     GraphicObject cubeA(cubeDraw);
     GraphicObject cubeB(cubeDraw);
     GraphicObject cubeC(cubeDraw);
@@ -96,5 +96,5 @@ void MyGameEngine::render() {
     cubeA.paint();
 
 #pragma endregion
-
+    assert(glGetError() ==GL_NONE);
 }

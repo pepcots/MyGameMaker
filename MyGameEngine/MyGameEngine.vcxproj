@@ -21,6 +21,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicObject.h" />
     <ClInclude Include="MyGameEngine.h" />
+    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +34,7 @@
     <ClCompile Include="CubeWireframeIVBO.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
     <ClCompile Include="MyGameEngine.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
