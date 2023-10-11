@@ -25,6 +25,10 @@ struct Cube : Graphic
 	const vec3 white;
 	const vec3 black;
 
+protected:
+	unsigned int _texture_id;
+
+public:
 	Cube();
 };
 

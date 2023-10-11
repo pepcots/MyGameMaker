@@ -8,3 +8,5 @@
 /x64/Debug
 /.vs
 /MyGameEngine/x64/Debug
+/x64/Release
+/MyGameEditor/x64/Release
