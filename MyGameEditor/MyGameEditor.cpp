@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
             const auto frame_start = steady_clock::now();
             engine.step(FDT);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-            engine.render(MyGameEngine::RenderModes::DEBUG);
+            engine.render();
             SDL_GL_SwapWindow(window);
             const auto frame_end = steady_clock::now();
             const auto frame_duration = frame_end - frame_start;

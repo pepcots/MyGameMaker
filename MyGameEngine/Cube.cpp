@@ -17,8 +17,6 @@ Cube::Cube() :
     white(0, 1, 1),
     black(1, 0, 1) {
 
-    ilInit();
-
     auto img = ilGenImage();
     ilBindImage(img);
     ilLoadImage("Lenna.png");
@@ -26,8 +24,6 @@ Cube::Cube() :
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);
     auto channels = ilGetInteger(IL_IMAGE_CHANNELS);
     auto data = ilGetData();
-
-
 
 }
 

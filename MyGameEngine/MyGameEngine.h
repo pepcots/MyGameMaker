@@ -8,12 +8,10 @@
 class MyGameEngine
 {
 public:
-
-	enum class RenderModes {RELEASE, DEBUG};
-
 	Camera camera;
 
+	MyGameEngine();
 	void step(std::chrono::duration<double> dt);
-	void render(RenderModes renderMode);
+	void render();
 };
 

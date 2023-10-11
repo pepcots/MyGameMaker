@@ -83,10 +83,10 @@
 $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] --recurse --triplet x64-windows</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;ILU.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;DevIL.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)vcpck\installed\x64-windows\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -111,10 +111,10 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] --r
 $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm --recurse --triplet x64-windows</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;ILU.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;DevIL.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)vcpck\installed\x64-windows\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

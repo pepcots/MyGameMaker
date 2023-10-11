@@ -2,6 +2,7 @@
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <vector>
+#include <IL/il.h>
 
 #include "CubeImmediateMode.h"
 #include "CubeVertexArray.h"
@@ -14,6 +15,12 @@
 using namespace std;
 
 static double angle = 0.0;
+
+MyGameEngine::MyGameEngine() {
+
+    ilInit();
+
+}
 
 void MyGameEngine::step(std::chrono::duration<double> dt) {
     const double angle_vel = 90.0; // degrees per second
@@ -56,7 +63,7 @@ static void drawGrid(int grid_size, int grid_step) {
     glEnd();
 }
 
-void MyGameEngine::render(RenderModes renderMode) {
+void MyGameEngine::render() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
@@ -67,10 +74,9 @@ void MyGameEngine::render(RenderModes renderMode) {
         camera.center.x, camera.center.y, camera.center.z,
         camera.up.x, camera.up.y, camera.up.z);
 
-    if (renderMode == RenderModes::DEBUG) {
-        drawGrid(100, 1);
-        drawAxis();
-    }
+    drawGrid(100, 1);
+    drawAxis();
+    
     
 #pragma region Draw Sandbox
     auto cubeDraw = make_shared<CubeInterleavedVBO>();
