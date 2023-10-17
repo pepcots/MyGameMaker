@@ -14,7 +14,6 @@ class GraphicObject
 	std::shared_ptr<Graphic> _graphic;
 
 public:
-
 	GraphicObject();
 	GraphicObject(std::shared_ptr<Graphic> graphic);
 
@@ -27,5 +26,9 @@ public:
 	void removeChild(GraphicObject* child);
 
 	virtual ~GraphicObject();
+
+private:
+	GraphicObject(const GraphicObject&);
+	GraphicObject& operator=(const GraphicObject&);
 
 };
