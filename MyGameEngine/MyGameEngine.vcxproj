@@ -20,6 +20,7 @@
     <ClInclude Include="CubeWireframeIVBO.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GraphicObject.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="MyGameEngine.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="types.h" />
@@ -33,6 +34,7 @@
     <ClCompile Include="CubeVertexBuffer.cpp" />
     <ClCompile Include="CubeWireframeIVBO.cpp" />
     <ClCompile Include="GraphicObject.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MyGameEngine.cpp" />
     <ClCompile Include="Texture2D.cpp" />
   </ItemGroup>
@@ -82,10 +84,10 @@
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)\vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] --recurse --triplet x64-windows</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] assimp --recurse --triplet x64-windows</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;DevIL.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;DevIL.lib;assimp-vc143-mt.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
@@ -110,10 +112,10 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] --r
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)\vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm --recurse --triplet x64-windows</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] assimp --recurse --triplet x64-windows</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;DevIL.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GLU32.lib;DevIL.lib;assimp-vc143-mt.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
