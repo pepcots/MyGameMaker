@@ -2,6 +2,8 @@
 #include <GL/glew.h>
 #include <IL/il.h>
 
+#include <algorithm>
+
 using namespace std;
 
 Texture2D::Texture2D(const std::string& path) {
@@ -9,7 +11,7 @@ Texture2D::Texture2D(const std::string& path) {
     //load image data using devil
     auto img = ilGenImage();
     ilBindImage(img);
-    ilLoadImage("Lenna.png");
+    ilLoadImage(path.c_str());
     auto width = ilGetInteger(IL_IMAGE_WIDTH);
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);
     auto channels = ilGetInteger(IL_IMAGE_CHANNELS);
@@ -30,8 +32,12 @@ Texture2D::Texture2D(const std::string& path) {
     ilDeleteImage(img);
 }
 
+Texture2D::Texture2D(Texture2D&& tex) noexcept : _id(tex._id) {
+    tex._id = 0;
+}
+
 Texture2D::~Texture2D() {
-    glDeleteTextures(1, &_id);
+    if(_id) glDeleteTextures(1, &_id);
 }
 
 void Texture2D::bind() const {
