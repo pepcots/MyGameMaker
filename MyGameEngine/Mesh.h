@@ -27,7 +27,7 @@ private:
 	const unsigned int _numIndexs;
 	
 public:
-	typedef std::shared_ptr<Mesh> Ptr;
+	using Ptr = std::shared_ptr<Mesh>;
 
 	static std::vector<Ptr> loadFromFile(const std::string& path);
 	

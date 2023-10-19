@@ -10,7 +10,7 @@ private:
 	unsigned int _id;
 
 public:
-	typedef std::shared_ptr<Texture2D> Ptr;
+	using Ptr = std::shared_ptr<Texture2D>;
 	explicit Texture2D(const std::string& path);
 	Texture2D(Texture2D&& tex) noexcept;
 	void bind() const;
