@@ -80,8 +80,21 @@ void MyGameEngine::render() {
     drawAxis();
     
 #pragma region Draw Sandbox
-    static auto mesh_ptrs = Mesh::loadFromFile("BakerHouse.fbx");
-    for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();
+    static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
+    
+    GraphicObject mesh1(mesh_ptrs.front());
+    GraphicObject mesh2(mesh_ptrs.back());
+
+    GraphicObject house;
+
+    house.addChild( std::move(mesh1));
+    house.addChild( std::move(mesh2));
+
+    GraphicObject root;
+    root.addChild(std::move(house));
+
+    root.paint();
+
 #pragma endregion
 
 
