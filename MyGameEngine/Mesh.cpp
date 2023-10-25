@@ -5,16 +5,33 @@
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 
+#include <span>
+
 #include <vector>
 #include <array>
+
+#include <filesystem>
+namespace fs = std::filesystem;
 
 using namespace std;
 
 std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
 
-    vector<Mesh::Ptr> mesh_ptrs;
+    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
-    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate |aiProcess_FlipUVs);
+    //load textures
+    vector<Texture2D::Ptr> texture_ptrs;
+    for (size_t t = 0; t < scene->mNumMaterials; ++t) {
+        auto material = scene->mMaterials[t];
+        aiString aiPath;
+        material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
+        fs::path texPath = fs::path(path).parent_path() / fs::path(aiPath.C_Str()).filename();
+        auto texture_ptr = make_shared<Texture2D>(texPath.string());
+        texture_ptrs.push_back(texture_ptr);
+    }
+    
+    //load meshes
+    vector<Mesh::Ptr> mesh_ptrs;
     for (size_t m = 0; m < scene->mNumMeshes; ++m) {
         auto mesh = scene->mMeshes[m];
         auto faces = mesh->mFaces;
@@ -35,14 +52,8 @@ std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
             index_data.push_back(faces[f].mIndices[2]);
         }
 
-        auto material = scene->mMaterials[mesh->mMaterialIndex];
-        aiString aiPath;
-        material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
-        string texPath = aiScene::GetShortFilename(aiPath.C_Str());
-
         auto mesh_ptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), vertex_data.size(), index_data.data(), index_data.size());
-        mesh_ptr->texture = make_shared<Texture2D>(texPath);
-
+        mesh_ptr->texture = texture_ptrs[mesh->mMaterialIndex];
         mesh_ptrs.push_back(mesh_ptr);
     }
 
