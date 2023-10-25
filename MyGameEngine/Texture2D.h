@@ -18,7 +18,7 @@ public:
 
 private:
 	Texture2D(const Texture2D&) = default;
-	Texture2D operator=(const Texture2D&) = default;
+	Texture2D& operator=(const Texture2D&) = default;
 
 };
 
