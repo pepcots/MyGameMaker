@@ -15,14 +15,26 @@ namespace fs = std::filesystem;
 
 using namespace std;
 
+struct aiMeshExt : aiMesh {
+    auto verts() const { return span((vec3f*)mVertices, mNumVertices); }
+    auto texCoords() const { return span((vec3f*)mTextureCoords[0], mNumVertices); }
+    auto faces() const { return span(mFaces, mNumFaces); }
+};
+
+struct aiSceneExt : aiScene {
+    auto materials() const { return span(mMaterials, mNumMaterials); }
+    auto meshes() const { return span((aiMeshExt**)mMeshes, mNumMeshes); }
+};
+
+
 std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
 
-    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
+    const auto scene_ptr = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiSceneExt& scene = *(aiSceneExt*)scene_ptr;
 
     //load textures
     vector<Texture2D::Ptr> texture_ptrs;
-    for (size_t t = 0; t < scene->mNumMaterials; ++t) {
-        auto material = scene->mMaterials[t];
+    for (const auto& material : scene.materials()){
         aiString aiPath;
         material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
         fs::path texPath = fs::path(path).parent_path() / fs::path(aiPath.C_Str()).filename();
@@ -32,32 +44,29 @@ std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
     
     //load meshes
     vector<Mesh::Ptr> mesh_ptrs;
-    for (size_t m = 0; m < scene->mNumMeshes; ++m) {
-        auto mesh = scene->mMeshes[m];
-        auto faces = mesh->mFaces;
-        vec3f* verts = (vec3f*)mesh->mVertices;
-        vec3f* texCoords = (vec3f*)mesh->mTextureCoords[0];
+    for (const auto& mesh_ptr : scene.meshes()) {
 
+        const auto& mesh = *mesh_ptr;
+        
         vector<V3T2> vertex_data;
-        vector<unsigned int> index_data;
-
-        for (size_t i = 0; i < mesh->mNumVertices; ++i) {
-            V3T2 v = { verts[i], vec2f(texCoords[i].x, texCoords[i].y) };
+        for (size_t i = 0; i < mesh.verts().size(); ++i) {
+            V3T2 v = { mesh.verts()[i], vec2f(mesh.texCoords()[i].x, mesh.texCoords()[i].y) };
             vertex_data.push_back(v);
         }
 
-        for (size_t f = 0; f < mesh->mNumFaces; ++f) {
-            index_data.push_back(faces[f].mIndices[0]);
-            index_data.push_back(faces[f].mIndices[1]);
-            index_data.push_back(faces[f].mIndices[2]);
+        vector<unsigned int> index_data;
+        for (const auto& face : mesh.faces()) {
+            index_data.push_back(face.mIndices[0]);
+            index_data.push_back(face.mIndices[1]);
+            index_data.push_back(face.mIndices[2]);
         }
 
-        auto mesh_ptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), vertex_data.size(), index_data.data(), index_data.size());
-        mesh_ptr->texture = texture_ptrs[mesh->mMaterialIndex];
-        mesh_ptrs.push_back(mesh_ptr);
+        auto mesh_sptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), vertex_data.size(), index_data.data(), index_data.size());
+        mesh_sptr->texture = texture_ptrs[mesh.mMaterialIndex];
+        mesh_ptrs.push_back(mesh_sptr);
     }
 
-    aiReleaseImport(scene);
+    aiReleaseImport(scene_ptr);
     
     return mesh_ptrs;
 }
