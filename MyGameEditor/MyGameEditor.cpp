@@ -7,6 +7,9 @@
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_opengl3.h>
 
 #include "../MyGameEngine/MyGameEngine.h"
 
@@ -54,6 +57,12 @@ static SDL_GLContext createSdlGlContext(SDL_Window* window) {
     return gl_context;
 }
 
+static void deinitSDL(SDL_Window* window, SDL_GLContext gl_context) {
+    SDL_GL_DeleteContext(gl_context);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
 static void initOpenGL() {
     auto glew_init_error = glewInit();
     if(glew_init_error!=GLEW_OK) throw exception((char*)glewGetErrorString(glew_init_error));
@@ -64,10 +73,34 @@ static void initOpenGL() {
     glDepthFunc(GL_LEQUAL);
 }
 
+static void initImGui(SDL_Window* window, SDL_GLContext gl_context) {
+    ImGui::CreateContext();
+    ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
+    ImGui_ImplOpenGL3_Init();
+}
+
+static void deinitImGui() {
+    ImGui_ImplSDL2_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui::DestroyContext();
+}
+
+static void renderImGui() {
+    ImGui_ImplSDL2_NewFrame();
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui::NewFrame();
+    ImGui::Text("Hello world, I'm GUI!");
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
 static bool processSDLEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
+
+        ImGui_ImplSDL2_ProcessEvent(&event);
+
         switch (event.type) {
         case SDL_QUIT: return false;
         case SDL_KEYDOWN:
@@ -86,6 +119,7 @@ int main(int argc, char* argv[])
         auto window = initSDLWindowWithOpenGL();
         auto gl_context = createSdlGlContext(window);
         initOpenGL();
+        initImGui(window,gl_context);
 
         {
             MyGameEngine engine;
@@ -103,6 +137,7 @@ int main(int argc, char* argv[])
                 engine.step(FDT);
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
                 engine.render();
+                renderImGui();
                 SDL_GL_SwapWindow(window);
                 const auto frame_end = steady_clock::now();
                 const auto frame_duration = frame_end - frame_start;
@@ -110,9 +145,8 @@ int main(int argc, char* argv[])
             }
         }
 
-        SDL_GL_DeleteContext(gl_context);
-        SDL_DestroyWindow(window);
-        SDL_Quit();
+        deinitImGui();
+        deinitSDL(window, gl_context);
 
         return EXIT_SUCCESS;
     }
