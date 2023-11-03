@@ -4,7 +4,6 @@
 #include <chrono>
 #include <thread>
 
-#include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <imgui.h>
@@ -64,9 +63,6 @@ static void deinitSDL(SDL_Window* window, SDL_GLContext gl_context) {
 }
 
 static void initOpenGL() {
-    auto glew_init_error = glewInit();
-    if(glew_init_error!=GLEW_OK) throw exception((char*)glewGetErrorString(glew_init_error));
-    if(!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     glClearColor(1, 1, 1, 1);
     glEnable(GL_DEPTH_TEST);

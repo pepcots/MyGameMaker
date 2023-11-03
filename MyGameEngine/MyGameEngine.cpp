@@ -22,6 +22,9 @@ MyGameEngine::MyGameEngine() {
 
     ilInit();
 
+    auto glew_init_error = glewInit();
+    if (glew_init_error != GLEW_OK) throw exception((char*)glewGetErrorString(glew_init_error));
+    if (!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
 }
 
 void MyGameEngine::step(std::chrono::duration<double> dt) {
