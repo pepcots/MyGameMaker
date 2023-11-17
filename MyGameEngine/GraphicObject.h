@@ -2,7 +2,6 @@
 
 #include "types.h"
 #include "Graphic.h"
-#include <glm/ext/matrix_transform.hpp>
 #include <list>
 #include <memory>
 
@@ -52,17 +51,33 @@ private:
 
 class GraphicObject : public Tree<GraphicObject>
 {
-	mat4 _transform;
+	union {
+		mat4 _transform;
+		struct {
+			vec3 _u; double __uw;
+			vec3 _v; double __vw;
+			vec3 _w; double __ww;
+			vec3 _pos;
+		};
+	};
+	
 	std::shared_ptr<Graphic> _graphic;
 
 public:
 
-	inline vec3& pos() { return (vec3&)(_transform[3]); }
+	inline const mat4& transform() const { return _transform; }
+	inline vec3& pos() { return _pos; }
+	inline const vec3& pos() const { return _pos; }
+
+	inline const vec3& u() const { return _u; }
+	inline const vec3& v() const { return _v; }
+	inline const vec3& w() const { return _w; }
 	
 	GraphicObject();
 	GraphicObject(std::shared_ptr<Graphic> graphic);
-	
-	inline void rotate(double rads, const vec3& axis) { _transform = glm::rotate(_transform, rads, axis); }
+
+	void rotate(double degrees, const vec3& axis);
+	void translate(const vec3& dv);
 
 	void paint() const;
 };
