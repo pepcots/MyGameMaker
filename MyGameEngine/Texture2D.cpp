@@ -2,10 +2,6 @@
 #include <GL/glew.h>
 #include <IL/il.h>
 
-#include <algorithm>
-
-using namespace std;
-
 Texture2D::Texture2D(const std::string& path) {
 
     //load image data using devil
