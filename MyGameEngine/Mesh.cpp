@@ -27,7 +27,7 @@ struct aiSceneExt : aiScene {
 };
 
 
-std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
+std::vector<std::shared_ptr<Mesh>> Mesh::loadFromFile(const std::string& path) {
 
     const auto scene_ptr = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
     const aiSceneExt& scene = *(aiSceneExt*)scene_ptr;
@@ -43,7 +43,7 @@ std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
     }
     
     //load meshes
-    vector<Mesh::Ptr> mesh_ptrs;
+    vector<shared_ptr<Mesh>> mesh_ptrs;
     for (const auto& mesh_ptr : scene.meshes()) {
 
         const auto& mesh = *mesh_ptr;
@@ -61,7 +61,7 @@ std::vector<Mesh::Ptr> Mesh::loadFromFile(const std::string& path) {
             index_data.push_back(face.mIndices[2]);
         }
 
-        auto mesh_sptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), vertex_data.size(), index_data.data(), index_data.size());
+        auto mesh_sptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), static_cast<unsigned int>(vertex_data.size()), index_data.data(), static_cast<unsigned int>(index_data.size()));
         mesh_sptr->texture = texture_ptrs[mesh.mMaterialIndex];
         mesh_ptrs.push_back(mesh_sptr);
     }
@@ -76,6 +76,7 @@ Mesh::Mesh(Formats format, const void* vertex_data, unsigned int numVerts, const
     _numVerts(numVerts),
     _numIndexs(numIndexs)
 {
+
     glGenBuffers(1, &_vertex_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, _vertex_buffer_id);
 
@@ -97,9 +98,6 @@ Mesh::Mesh(Formats format, const void* vertex_data, unsigned int numVerts, const
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexs_buffer_id);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numIndexs, index_data, GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    }
-    else {
-        _indexs_buffer_id = 0;
     }
 }
 

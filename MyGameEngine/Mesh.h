@@ -19,16 +19,15 @@ public:
 private:
 	const enum Formats _format;
 
-	unsigned int _vertex_buffer_id;
-	const unsigned int _numVerts;
+	unsigned int _vertex_buffer_id{0};
+	const unsigned int _numVerts{0};
 
-	unsigned int _indexs_buffer_id;
-	const unsigned int _numIndexs;
+	unsigned int _indexs_buffer_id{0};
+	const unsigned int _numIndexs{0};
 	
 public:
-	using Ptr = std::shared_ptr<Mesh>;
-
-	static std::vector<Ptr> loadFromFile(const std::string& path);
+	
+	static std::vector<std::shared_ptr<Mesh>> loadFromFile(const std::string& path);
 	
 	Texture2D::Ptr texture;
 
