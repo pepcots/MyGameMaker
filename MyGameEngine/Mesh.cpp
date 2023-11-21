@@ -83,12 +83,24 @@ Mesh::Mesh(Formats format, const void* vertex_data, unsigned int numVerts, const
     switch (_format) {
     case Formats::F_V3:
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * numVerts, vertex_data, GL_STATIC_DRAW);
+        for (const auto& v : span((V3*)vertex_data, numVerts)) {
+            aabb.min = glm::min(aabb.min, vec3(v.v));
+            aabb.max = glm::max(aabb.max, vec3(v.v));
+        }
         break;
     case Formats::F_V3C4:
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * numVerts, vertex_data, GL_STATIC_DRAW);
+        for (const auto& v : span((V3C4*)vertex_data, numVerts)) {
+            aabb.min = glm::min(aabb.min, vec3(v.v));
+            aabb.max = glm::max(aabb.max, vec3(v.v));
+        }
         break;
     case Formats::F_V3T2:
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * numVerts, vertex_data, GL_STATIC_DRAW);
+        for (const auto& v : span((V3T2*)vertex_data, numVerts)) {
+            aabb.min = glm::min(aabb.min, vec3(v.v));
+            aabb.max = glm::max(aabb.max, vec3(v.v));
+        }
         break;
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);

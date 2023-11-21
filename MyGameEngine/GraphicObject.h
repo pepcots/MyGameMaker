@@ -4,6 +4,7 @@
 #include "Graphic.h"
 #include <list>
 #include <memory>
+#include "BBox.hpp"
 
 
 template <class T>
@@ -24,6 +25,7 @@ public:
 	T* parent() { return _parent_ptr; }
 	const T* parent() const { return _parent_ptr; }
 	const std::list<T>& children() const { return _children; }
+	std::list<T>& children() { return _children; }
 
 	void addChild(T&& child) {
 		_children.push_back(std::move(child));
@@ -78,6 +80,8 @@ public:
 
 	void rotate(double degrees, const vec3& axis);
 	void translate(const vec3& dv);
+
+	AABBox aabb() const;
 
 	void paint() const;
 };

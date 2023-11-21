@@ -84,17 +84,21 @@ void MyGameEngine::render() {
     
 #pragma region Draw Sandbox
     static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
-    static GraphicObject mesh1(mesh_ptrs.front());
-    static GraphicObject mesh2(mesh_ptrs.back());
-    static GraphicObject house;
-    if (!house.children().size()) {
-        house.addChild(std::move(mesh1));
-        house.addChild(std::move(mesh2));
+    static GraphicObject root;
+    if (root.children().empty()) {
+        root.addChild(GraphicObject());
+        root.children().front().addChild(GraphicObject(mesh_ptrs.front()));
+        root.children().front().addChild(GraphicObject(mesh_ptrs.back()));
     }
 
-    house.rotate(0.1, vec3(0, 1, 0));
+    auto& house_ref = root.children().front();
+    auto& mesh1_ref = house_ref.children().front();
+    auto& mesh2_ref = house_ref.children().back();
 
-    house.paint();
+    mesh1_ref.rotate(0.1, vec3(0, 1, 0));
+    house_ref.rotate(0.1, vec3(0, 1, 0));
+
+    root.paint();
 
 #pragma endregion
 
