@@ -1,15 +1,20 @@
-#include "GraphicObject.h"
+#include "GameObject.h"
 #include <GL/glew.h>
 #include <glm/ext/matrix_transform.hpp>
+#define NOMINMAX
+#include <Windows.h>
+#include <string>
 
-GraphicObject::GraphicObject() : _transform(glm::identity<mat4>()) {}
-GraphicObject::GraphicObject(std::shared_ptr<Graphic> graphic) : _transform(glm::identity<mat4>()), _graphic(graphic) {}
+using namespace std;
 
-void GraphicObject::rotate(double degrees, const vec3& axis) {
+GameObject::GameObject() : _transform(glm::identity<mat4>()) {}
+GameObject::GameObject(std::shared_ptr<Graphic> graphic) : _transform(glm::identity<mat4>()), _graphic(graphic) {}
+
+void GameObject::rotate(double degrees, const vec3& axis) {
 	_transform = glm::rotate(_transform, glm::radians(degrees), axis);
 }
 
-void GraphicObject::translate(const vec3& dv) {
+void GameObject::translate(const vec3& dv) {
 	_transform = glm::translate(_transform, dv);
 }
 
@@ -42,7 +47,7 @@ static void drawAABBox(const AABBox& aabb) {
 	glEnd();
 }
 
-AABBox GraphicObject::aabb() const {
+AABBox GameObject::aabb() const {
 	AABBox aabbox;
 	if (_graphic.get()) aabbox = _graphic->aabb;
 	else if (children().empty()) {
@@ -59,7 +64,16 @@ AABBox GraphicObject::aabb() const {
 	return aabbox;
 }
 
-void GraphicObject::paint() const {
+void GameObject::step(double dt) {
+	if (_eventHandler.get()) _eventHandler->OnStep(dt);
+	for (auto& child : children()) child.step(dt);
+}
+
+void GameObject::paint() {
+
+	if (_eventHandler.get()) _eventHandler->OnRender();
+
+	if (!IsVisible()) return;
 
 	glPushMatrix();
 	glMultMatrixd(&_transform[0].x);
@@ -71,4 +85,22 @@ void GraphicObject::paint() const {
 	for (auto& child : children()) child.paint();
 	
 	glPopMatrix();
+}
+
+void GameObject::setEventHandler(const std::string& name) {
+
+	if (_hModule) {
+		_eventHandler.reset();
+		FreeLibrary(static_cast<HMODULE>(_hModule));
+	}
+
+	if (!name.empty()) {
+		_hModule = LoadLibrary((std::string("C:\\Users\\pec\\Source\\Repos\\pepcots\\MyGameMaker\\x64\\Debug\\") + name + ".dll").c_str());
+		auto NewEventHandler = (NewEventHandler_t)GetProcAddress(static_cast<HMODULE>(_hModule), (string("New") + name).c_str());
+		_eventHandler.reset(NewEventHandler(*this));
+	}
+}
+
+GameObject::~GameObject() {
+	setEventHandler("");
 }

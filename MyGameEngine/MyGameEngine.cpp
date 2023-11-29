@@ -12,11 +12,9 @@
 
 #include "Mesh.h"
 
-#include "GraphicObject.h"
+#include "GameObject.h"
 
 using namespace std;
-
-static double angle = 0.0;
 
 MyGameEngine::MyGameEngine() {
 
@@ -25,11 +23,24 @@ MyGameEngine::MyGameEngine() {
     auto glew_init_error = glewInit();
     if (glew_init_error != GLEW_OK) throw exception((char*)glewGetErrorString(glew_init_error));
     if (!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
+
+#pragma region Configure scene
+    auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
+    auto& mesh1_ref = scene.addChild(mesh_ptrs.front());
+    scene.addChild();
+    auto& mesh2_ref = scene.addChild(mesh_ptrs.back());
+
+    mesh1_ref.setEventHandler("EventHandler1");
+    mesh2_ref.setEventHandler("EventHandler2");
+
+    scene.removeChikd(++scene.children().begin());
+
+#pragma endregion
+
 }
 
 void MyGameEngine::step(std::chrono::duration<double> dt) {
-    const double angle_vel = 90.0; // degrees per second
-	angle += angle_vel * dt.count();
+    scene.step(dt.count());
 }
 
 static void drawAxis() {
@@ -81,27 +92,8 @@ void MyGameEngine::render() {
 
     drawGrid(100, 1);
     drawAxis();
-    
-#pragma region Draw Sandbox
-    static auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
-    static GraphicObject root;
-    if (root.children().empty()) {
-        root.addChild(GraphicObject());
-        root.children().front().addChild(GraphicObject(mesh_ptrs.front()));
-        root.children().front().addChild(GraphicObject(mesh_ptrs.back()));
-    }
 
-    auto& house_ref = root.children().front();
-    auto& mesh1_ref = house_ref.children().front();
-    auto& mesh2_ref = house_ref.children().back();
-
-    mesh1_ref.rotate(0.1, vec3(0, 1, 0));
-    house_ref.rotate(0.1, vec3(0, 1, 0));
-
-    root.paint();
-
-#pragma endregion
-
+    scene.paint();
 
     assert(glGetError() ==GL_NONE);
 }
