@@ -95,7 +95,12 @@ void GameObject::setEventHandler(const std::string& name) {
 	}
 
 	if (!name.empty()) {
-		_hModule = LoadLibrary((std::string("C:\\Users\\pec\\Source\\Repos\\pepcots\\MyGameMaker\\x64\\Debug\\") + name + ".dll").c_str());
+#ifdef _DEBUG
+		const string dllFolder("../x64/Debug/");
+#else
+		const string dllFolder("../x64/Release/");
+#endif
+		_hModule = LoadLibrary((dllFolder + name + ".dll").c_str());
 		auto NewEventHandler = (NewEventHandler_t)GetProcAddress(static_cast<HMODULE>(_hModule), (string("New") + name).c_str());
 		_eventHandler.reset(NewEventHandler(*this));
 	}
