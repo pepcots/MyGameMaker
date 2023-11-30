@@ -91,7 +91,7 @@ void GameObject::setEventHandler(const std::string& name) {
 
 	if (_hModule) {
 		_eventHandler.reset();
-		FreeLibrary(static_cast<HMODULE>(_hModule));
+		FreeLibrary(static_cast<HMODULE>(_hModule)); 
 	}
 
 	if (!name.empty()) {
