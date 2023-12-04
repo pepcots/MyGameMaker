@@ -81,7 +81,10 @@ void GameObject::paint() {
 	glColor3ub(128, 0, 0);
 	drawAABBox(aabb());
 
+	if (_shader.get()) _shader->bind();
 	if (_graphic.get()) _graphic->draw();
+	glUseProgram(0);
+	
 	for (auto& child : children()) child.paint();
 	
 	glPopMatrix();

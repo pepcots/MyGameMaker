@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include "Shader.h"
 #include "Graphic.h"
 #include "Tree.hpp"
 
@@ -24,6 +25,7 @@ class GameObject : public Tree<GameObject>, public IGameObject
 		};
 	};
 	
+	std::shared_ptr<Shader> _shader;
 	std::shared_ptr<Graphic> _graphic;
 
 	void* _hModule{nullptr};
@@ -32,6 +34,8 @@ class GameObject : public Tree<GameObject>, public IGameObject
 	bool _isVisible{ true };
 
 public:
+
+	inline std::shared_ptr<Shader>& shaderPtr() { return _shader; }
 
 	inline const mat4& transform() const override { return _transform; }
 	inline vec3& pos() override { return _pos; }

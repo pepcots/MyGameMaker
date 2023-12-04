@@ -13,6 +13,9 @@
 #include "Mesh.h"
 
 #include "GameObject.h"
+#include "Shader.h"
+#include "default.vsh.h"
+#include "default.fsh.h"
 
 using namespace std;
 
@@ -24,6 +27,9 @@ MyGameEngine::MyGameEngine() {
     if (glew_init_error != GLEW_OK) throw exception((char*)glewGetErrorString(glew_init_error));
     if (!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
 
+    auto shader_ptr = make_shared<Shader>();
+    shader_ptr->compile( default_vsh, default_fsh);
+
 #pragma region Configure scene
     auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
     auto& mesh1_ref = scene.addChild(mesh_ptrs.front());
@@ -32,6 +38,8 @@ MyGameEngine::MyGameEngine() {
 
     mesh1_ref.setEventHandler("EventHandler1");
     mesh2_ref.setEventHandler("EventHandler2");
+
+    mesh2_ref.shaderPtr() = shader_ptr;
 
     scene.removeChikd(++scene.children().begin());
 
