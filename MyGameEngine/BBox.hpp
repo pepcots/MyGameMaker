@@ -38,14 +38,15 @@ struct OBBox {
 };
 
 inline OBBox operator*(const mat4& transform, const AABBox& aabb) {
-	OBBox bbox;
-	bbox.a = transform * vec4(aabb.a(), 1);
-	bbox.b = transform * vec4(aabb.b(), 1);
-	bbox.c = transform * vec4(aabb.c(), 1);
-	bbox.d = transform * vec4(aabb.d(), 1);
-	bbox.e = transform * vec4(aabb.e(), 1);
-	bbox.f = transform * vec4(aabb.f(), 1);
-	bbox.g = transform * vec4(aabb.g(), 1);
-	bbox.h = transform * vec4(aabb.h(), 1);
+	OBBox bbox{
+		transform * vec4(aabb.a(), 1.0),
+		transform * vec4(aabb.b(), 1.0),
+		transform * vec4(aabb.c(), 1.0),
+		transform * vec4(aabb.d(), 1.0),
+		transform * vec4(aabb.e(), 1.0),
+		transform * vec4(aabb.f(), 1.0),
+		transform * vec4(aabb.g(), 1.0),
+		transform * vec4(aabb.h(), 1.0)
+	};
 	return bbox;
 }

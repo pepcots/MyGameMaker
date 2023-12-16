@@ -15,8 +15,8 @@
 using namespace std;
 using namespace chrono;
 
-static const unsigned int WINDOW_WIDTH = 576*4/3;
-static const unsigned int WINDOW_HEIGHT = 576;
+static const unsigned int WINDOW_WIDTH = 720*4/3;
+static const unsigned int WINDOW_HEIGHT = 720;
 static const unsigned int FPS = 60;
 static const auto FDT = 1.0s / FPS;
 
@@ -126,7 +126,6 @@ int main(int argc, char* argv[])
             engine.camera.eye = vec3(5, 1.75, 5);
             engine.camera.center = vec3(0, 1, 0);
             engine.camera.up = vec3(0, 1, 0);
-
 
             while (processSDLEvents()) {
                 const auto frame_start = steady_clock::now();

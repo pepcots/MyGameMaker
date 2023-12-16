@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg/installed/x64-windows/lib/</AdditionalLibraryDirectories>
+    </Lib>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg/installed/x64-windows/include/</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <Target Name="VcPkgInstall" BeforeTargets="Rebuild">
+    <Exec Command="$(SolutionDir)\vcpkg\vcpkg.exe install opengl sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] glew glm devil[libjpeg,libpng] assimp --recurse --triplet x64-windows" />
+  </Target>
+</Project>
