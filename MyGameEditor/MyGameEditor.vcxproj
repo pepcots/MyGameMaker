@@ -58,7 +58,7 @@
     </Link>
     <PreBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)\vcpkg\installed\x64-windows\bin\*.* $(OutDir)</Command>
+      <Command>copy $(SolutionDir)\vcpkg\installed\x64-windows\bin\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -82,7 +82,7 @@
     </Link>
     <PreBuildEvent />
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)\vcpkg\installed\x64-windows\bin\*.* $(OutDir)</Command>
+      <Command>copy $(SolutionDir)\vcpkg\installed\x64-windows\bin\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
