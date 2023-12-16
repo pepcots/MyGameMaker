@@ -28,22 +28,28 @@ void CubeImmediateMode::draw() {
 
     glBegin(GL_TRIANGLES);
     //front
-    //glColor3dv(&red.x);
+    glNormal3d(0, 0, 1);
+    glColor3dv(&red.x);
     drawQuadFaceTriangles(a, b, c, d);
     //back
-    //glColor3dv(&green.x);
+    glNormal3d(0, 0, -1);
+    glColor3dv(&green.x);
     drawQuadFaceTriangles(h, g, f, e);
     //left
-    //glColor3dv(&blue.x);
+    glNormal3d(-1, 0, 0);
+    glColor3dv(&blue.x);
     drawQuadFaceTriangles(e, a, d, h);
     //right
-    //glColor3dv(&yellow.x);
+    glNormal3d(1, 0, 0);
+    glColor3dv(&yellow.x);
     drawQuadFaceTriangles(b, f, g, c);
     //top
-    //glColor3dv(&white.x);
+    glNormal3d(0, 1, 0);
+    glColor3dv(&white.x);
     drawQuadFaceTriangles(d, c, g, h);
     //bottom
-    //glColor3dv(&black.x);
+    glNormal3d(0, -1, 0);
+    glColor3dv(&black.x);
     drawQuadFaceTriangles(b, a, e, f);
     glEnd();
 

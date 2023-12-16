@@ -20,10 +20,12 @@
     <ClInclude Include="CubeWireframeIVBO.h" />
     <ClInclude Include="default.fsh.h" />
     <ClInclude Include="default.vsh.h" />
+    <ClInclude Include="flat.sh.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MyGameEngine.h" />
+    <ClInclude Include="phong.sh.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Tree.hpp" />
@@ -86,7 +88,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../vcpkg/installed/x64-windows/include/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -95,10 +96,7 @@
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>call $(SolutionDir)\vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] assimp --recurse --triplet x64-windows</Command>
-    </PreBuildEvent>
+    <PreBuildEvent />
     <Lib>
       <AdditionalDependencies>OpenGL32.lib;GLU32.lib;glew32.lib;DevIL.lib;assimp-vc143-mt.lib</AdditionalDependencies>
     </Lib>
@@ -114,7 +112,6 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] ass
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../vcpkg/installed/x64-windows/include/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -125,10 +122,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] ass
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>call $(SolutionDir)\vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm devil[libjpeg,libpng] assimp --recurse --triplet x64-windows</Command>
-    </PreBuildEvent>
+    <PreBuildEvent />
     <Lib>
       <AdditionalDependencies>OpenGL32.lib;GLU32.lib;glew32.lib;DevIL.lib;assimp-vc143-mt.lib</AdditionalDependencies>
     </Lib>

@@ -4,6 +4,18 @@
 
 using namespace std;
 
+Shader::Shader(Shader&& b) noexcept :
+	_program_id(b._program_id),
+	_vertex_sh_id(b._vertex_sh_id),
+	_fragment_sh_id(b._fragment_sh_id),
+	_uniformLocations(std::move(b._uniformLocations))
+{
+	b._program_id = 0;
+	b._vertex_sh_id = 0;
+	b._fragment_sh_id = 0;
+}
+
+
 static GLuint compile(const std::string& src, int target) {
 	GLuint id = glCreateShader(target);
 	const auto src_ptr = src.c_str();
@@ -17,7 +29,7 @@ static GLuint compile(const std::string& src, int target) {
 	{
 		glGetShaderInfoLog(id, 512, NULL, infoLog);
 		cerr << "Shader compilation error: " <<  infoLog << endl;
-		throw exception("");
+		throw exception(infoLog);
 	}
 
 	return id;
@@ -49,6 +61,18 @@ void Shader::unload() {
 		_vertex_sh_id = 0;
 		_fragment_sh_id = 0;
 	}
+}
+
+void Shader::setUniform(const std::string& uniform_name, const vec3& value) {
+	GLint uLocation = 0;
+	auto itr = _uniformLocations.find(uniform_name);
+	if (itr == _uniformLocations.end()) {
+		uLocation = glGetUniformLocation(id(), uniform_name.c_str());
+		_uniformLocations[uniform_name] = uLocation;
+	}
+	else uLocation = itr->second;
+
+	glUniform3f(uLocation, value.x, value.y, value.z);
 }
 
 Shader::~Shader() {

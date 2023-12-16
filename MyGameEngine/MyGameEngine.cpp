@@ -16,8 +16,13 @@
 #include "Shader.h"
 #include "default.vsh.h"
 #include "default.fsh.h"
+#include "flat.sh.h"
+#include "phong.sh.h"
 
 using namespace std;
+
+Shader s_flat;
+Shader s_phong;
 
 MyGameEngine::MyGameEngine() {
 
@@ -30,6 +35,9 @@ MyGameEngine::MyGameEngine() {
     auto shader_ptr = make_shared<Shader>();
     shader_ptr->compile( default_vsh, default_fsh);
 
+    s_flat.compile(flat_vsh, flat_fsh);
+    s_phong.compile(phong_vsh, phong_fsh);
+
 #pragma region Configure scene
     auto mesh_ptrs = Mesh::loadFromFile("Assets/BakerHouse.fbx");
     auto& mesh1_ref = scene.addChild(mesh_ptrs.front());
@@ -41,7 +49,7 @@ MyGameEngine::MyGameEngine() {
 
     mesh2_ref.shaderPtr() = shader_ptr;
 
-    scene.removeChikd(++scene.children().begin());
+    scene.removeChild(++scene.children().begin());
 
 #pragma endregion
 
@@ -87,21 +95,68 @@ static void drawGrid(int grid_size, int grid_step) {
     glEnd();
 }
 
+static void drawPlane(int inc) {
+    glColor3ub(128, 0, 0);
+    glNormal3d(0, 1, 0);
+    glBegin(GL_QUADS);
+
+    for (int x = -100; x < 100; x+=inc) {
+        for (int z = -100; z < 100; z+=inc) {
+            glVertex3i(x, 0, z+inc);
+            glVertex3i(x+inc, 0, z+inc);
+            glVertex3i(x+inc, 0, z);
+            glVertex3i(x, 0, z);
+        }
+    }
+
+    glEnd();
+}
+
 void MyGameEngine::render() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt( camera.eye.x, camera.eye.y, camera.eye.z,
-        camera.center.x, camera.center.y, camera.center.z,
-        camera.up.x, camera.up.y, camera.up.z);
 
+    const mat4 viewMat = glm::lookAt(camera.eye, camera.center, camera.up);
+    glLoadMatrixd(&viewMat[0][0]);
+    
     drawGrid(100, 1);
     drawAxis();
 
-    scene.paint();
+    //scene.paint();
+
+    //plane
+    static double a = 0;
+    a += 0.025;
+    const vec3 lightPos(sin(a)*2, 1.5+sin(a*0.5), cos(a)*2);
+    const vec3 lightViewPos = viewMat * vec4(lightPos, 1.0);
+    
+    glColor3ub(255, 255, 0);
+    glPointSize(10.0);
+    glBegin(GL_POINTS);
+    glVertex3dv(&lightPos.x);
+    glEnd();
+
+    static int frame = 0;
+
+    auto& shader_ref = ( ((++frame) % 600)<300) ? s_flat : s_phong;
+
+    shader_ref.bind();
+    shader_ref.setUniform("uLightViewPos", lightViewPos);
+    drawPlane(2);
+
+    static CubeImmediateMode cube;
+    cube.draw();
+
+    glPushMatrix();
+    glTranslated(-2, 0.5, 0);
+    cube.draw();
+    glPopMatrix();
+
+    glUseProgram(0);
+
 
     assert(glGetError() ==GL_NONE);
 }

@@ -66,6 +66,12 @@
     <ClInclude Include="default.fsh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="flat.sh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="phong.sh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGameEngine.cpp">
