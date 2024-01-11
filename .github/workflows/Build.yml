@@ -9,7 +9,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
-        fetch-depth: 0
     - shell: pwsh 
       run: ./vcpkg/scripts/bootstrap.ps1
     - run: ./vcpkg/vcpkg.exe install opengl sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] glew glm devil assimp --recurse --triplet x64-windows
