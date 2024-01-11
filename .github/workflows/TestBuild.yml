@@ -8,6 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
+        submodules: recursive
         fetch-depth: 0
     - shell: pwsh 
       run: ./vcpkg/scripts/bootstrap.ps1
