@@ -12,19 +12,18 @@ jobs:
     - shell: pwsh 
       run: ./vcpkg/scripts/bootstrap.ps1
     
-    - run: ./vcpkg/vcpkg.exe install sdl2 --recurse --triplet x64-windows
+    - run: ./vcpkg/vcpkg.exe install opengl sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] glew glm devil assimp --recurse --triplet x64-windows
     - uses: actions/upload-artifact@v4
       with:
         name: MyGameEditor_Build_Dependencies
         path: |
           vcpkg/installed/
 
-    - run: ./vcpkg/vcpkg.exe install opengl sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] glew glm devil assimp --recurse --triplet x64-windows
     - uses: microsoft/setup-msbuild@v1.0.2
     - run: msbuild MyGameMaker.sln
     - uses: actions/upload-artifact@v4
       with:
         name: MyGameEditor_Release
         path: |
-          x64/Release/*.exe
-          x64/Release/*.dll
+          x64/Debug/*.exe
+          x64/Debug/*.dll
