@@ -7,7 +7,10 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-    - run: ./vcpkg/scripts/bootstrap.ps1
+      with:
+        fetch-depth: 0
+    - shell: pwsh 
+      run: ./vcpkg/scripts/bootstrap.ps1
     - run: ./vcpkg/vcpkg.exe install glm
     - uses: microsoft/setup-msbuild@v1.0.2
     - run: msbuild MyGameMaker.sln
