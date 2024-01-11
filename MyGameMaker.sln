@@ -25,6 +25,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyGameEngine.Tests", "MyGam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F552C617-1C92-4CF4-A063-911AFDEB1F93}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\Build.yml = .github\workflows\Build.yml
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject

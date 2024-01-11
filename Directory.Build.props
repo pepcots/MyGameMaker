@@ -14,6 +14,6 @@
   </ItemDefinitionGroup>
 
   <Target Name="VcPkgInstall" BeforeTargets="Rebuild">
-    <Exec Command="$(SolutionDir)\vcpkg\vcpkg.exe install opengl sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] glew glm devil[libjpeg,libpng] assimp --recurse --triplet x64-windows" />
+    <Exec Command="$(SolutionDir)\vcpkg\vcpkg.exe install opengl sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] glew glm devil assimp --recurse --triplet x64-windows" />
   </Target>
 </Project>
