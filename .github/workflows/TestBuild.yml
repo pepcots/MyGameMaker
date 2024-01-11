@@ -1,8 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: TestBuild
 
 on:
@@ -10,6 +5,9 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workworkflow_dispatch: 
+    branches: [ "master" ]
+    
 
 env:
   # Path to the solution file relative to the root of the project.
